@@ -40,7 +40,7 @@ In this lab, I utilized Oracle VirtualBox to create an **Active Directory Home L
 ## **Step 1 – Download Oracle Virtual Box** 
 Link: https://www.virtualbox.org/wiki/Downloads
 Download the VirtualBox 7.2.2 from the VirtualBox platform package by selecting the correct OS. Also, after installation make sure to download and install the VirtualBox Extension Pack which also found on the same page.
-<img width="850" height="450" alt="virtualbox" src="image\img1virtualbox.png">
+<img width="850" height="350" alt="virtualbox" src="image\img1virtualbox.png">
 
  
 ## **Step 2 – Download windows 10 OS and Server 2019 ISO** 
@@ -50,31 +50,31 @@ Follow the both links to download required OS, ISOs (windows 10 iso and server 2
 
 ## **Step 3 – Create a New Virtual Machine on VirtualBox** 
 Now, Open Oracle VirtualBox and click New to create a new Virtual Machine (VM). 
-<img width="850" height="450" alt="new vm" src="image/img2 new vm.png">
+<img width="500" height="450" alt="new vm" src="image/img2 new vm.png">
 
 After clicking the new, we will name it as a DC (for Domain Controller) and for version choose “Other Windows (64-bit)”. 
-<img width="850" height="450" alt="naming VM and choosing OS version" src="image/img3 naming vm and choosing OS Version.png">
+<img width="850" height="350" alt="naming VM and choosing OS version" src="image/img3 naming vm and choosing OS Version.png">
 
 Next, we will configure the hardware settings for the VM by assigning the 2-4 GB of RAM and a virtual hard disk of 50-60 GB (Dynamically allocated). In my case I assigned 4096 MB of memory and 2 CPUs. Click “Next” through the remaining options, then select Finish to complete the VM creation.
-<img width="850" height="450" alt="memory and cpu selection" src="image/img4 memory and cpu selection.png">
+<img width="900" height="300" alt="memory and cpu selection" src="image/img4 memory and cpu selection.png">
 
 
 ## **Step 4 – Configure DC Machine Basics**
 Open the settings for the **DC machine** and go to the **General** section. Under the Advanced tab, change the **Shared Clipboard** option from Disabled to **Bidirectional**, and do the same for **Drag’n’Drop**. Enabling these features allows us to copy and paste text between our host computer and the virtual machine, as well as drag files directly from our desktop into the VM.
-<img width="850" height="450" alt="general setting" src="image/img5 general setting.png">
+<img width="850" height="390" alt="general setting" src="image/img5 general setting.png">
 
 Next, navigate to the Network Settings, since this machine will serve as a Domain Controller, it needs two network interface cards (NICs). The first adapter is already set to **NAT**, which connects to our home internet. Leave this as is. Then, add a second adapter by enabling **Adapter 2** and selecting **Internal Network** from the dropdown menu. Once both adapters are configured, click **OK** to save the settings.
-<img width="850" height="450" alt="adaptor setting" src="image/img6 adaptor setting.png">
+<img width="850" height="500" alt="adaptor setting" src="image/img6 adaptor setting.png">
  
 ## **Step 5 – Adding the Server 2019 ISO**
 Next, open the -DC VM. At this point, we may encounter an error because the Windows Server 2019 ISO has not yet been attached.
 <img width="850" height="450" alt="error" src="image/img7 error because of iso.png">
 To fix this, go to the **VM settings** and navigate to the **Storage** section. Under **Controller: IDE**, we will see a CD icon. Click on it and select the **Windows Server 2019 ISO** file that we downloaded earlier. This will mount the ISO to the virtual machine and allow the installation process to begin when the VM is started.
-<img width="850" height="450" alt="adding iso server" src="image/img8 adding iso server.png">
+<img width="850" height="400" alt="adding iso server" src="image/img8 adding iso server.png">
 
 ## **Step 6 – Installing and Starting VM Server 2019** 
 Now start the **DC VM** and begin installing **Windows Server 2019**. Follow the installation prompts until we reach the setup for the Administrator account. Create a strong password for the Administrator user and then click **Finish** to complete the installation. Once the server installation is complete, we will need to unlock the machine by pressing **Ctrl + Alt + Delete**. Since this key combination does not work directly in VirtualBox, the easier method is to go to the top menu bar and select  **Input → Keyboard → Insert Ctrl+Alt+Delete**. This will unlock the VM and allow us to log in with the Administrator credentials we just created.
-<img width="850" height="450" alt="ctrl+alt+dlt" src="image/img9 ctrl+alt+dlt.png">
+<img width="700" height="500" alt="ctrl+alt+dlt" src="image/img9 ctrl+alt+dlt.png">
  
 ## **Step 7 – Setting up IP Address on the DC**
 The next step is to configure the IP addressing for the Domain Controller. Since the DC has two NICs, one is used for the **Internet** and the other for the **Internal Network**. The Internet adapter automatically receives an IP address from the home router, while the Internal adapter must be configured manually. To begin, click on the **Network** icon at the bottom-right of the VM screen and select **Network and Internet Settings**. From there, click **Change adapter options** to view both adapters.
@@ -112,19 +112,19 @@ After creating the account, right-click the user and go to **Properties → Memb
 
 
 Now, we will find our own Domain Admin Account. Next, Go ahead and log out of the current user profile and log back with our created new admin account. Sign out this account and again login with admin account by clicking “other users” instead of login as an administrator account. (That which I have created as “a-alsabhj”). 
-<img width="850" height="450" alt="alogin page" src="image/img21 login as a admin.png">
+<img width="650" height="550" alt="alogin page" src="image/img21 login as a admin.png">
 
 ## **Step 9 – Set UP RSA and NAT** 
 In this step, we are setting up the Remote Access Server (RAS) and configuring Network Address Translation (NAT). This allows our Windows 10 client machines to stay on the private virtual network while still being able to access the internet through the domain controller. To do this, we open Server Manager and go to **Add Roles and Features**. After clicking Next three times, we arrive at the Select Server Roles page, where we select **Remote Access**. We continue through the wizard until we reach the Select Role Services page and then choose **Routing**. Once we select routing, it will automatically enable **DirectAccess and VPN (RAS)**, which we leave selected. We then proceed by clicking Next until we reach the installation page and finish installing the new role and feature.
 
-<img width="850" height="450" alt="DNS server installing" src="image/img22 DNS Server installing.png">
+<img width="800" height="500" alt="DNS server installing" src="image/img22 DNS Server installing.png">
 <img width="850" height="450" alt="routing" src="image/img23 routing.png">
 
 After installation, we return to Server Manager, open Tools, and select **Routing and Remote Access**. Here, we right-click on **-DC (local)** and choose Configure and Enable Routing and Remote Access. In the configuration wizard, we select **Network Address Translation (NAT)** instead of Remote Access and continue to the next step. From the list of network interfaces, we select the adapter named **INTERNET**, which we configured earlier, since this interface connects to the external internet. We then click Next and complete the setup. 
 <img width="850" height="450" alt="routing" src="image/img24 selecting configure and enable routing access.png">
 <img width="850" height="450" alt="selecting NAT" src="image/img25 selecting NAT.png">
 <img width="850" height="450" alt="choosing internet" src="image/img26 choosing internet.png">
-<img width="850" height="450" alt="local dc" src="image/img27 -dc local.png">
+<img width="850" height="500" alt="local dc" src="image/img27 -dc local.png">
 
 Once configured, the domain controller now runs Routing and Remote Access with NAT enabled, ensuring that internal client machines can access the internet through it.
 
@@ -137,7 +137,7 @@ Once installed, go back to the Server Manager Dashboard, click Tools, and select
 
 <img width="850" height="450" alt="adding new scope" src="image/img28 new scope.png">
 For the scope name, we will define an IP address range of **172.16.0.100–172.16.0.200**. On the IP Address Range page, enter **172.16.0.100** as the start address and **172.16.0.200** as the end address, with a subnet mask of **/24**.
-<img width="850" height="450" alt="ip range" src="/image/img29 ip range 100-200.png">
+<img width="850" height="450" alt="ip range" src="image/img29 ip range 100-200.png">
 
 Continue by clicking Next three times without making changes, leaving the default lease duration of eight days. The lease duration determines how long a client can use an assigned IP address before it must be renewed—for example, cafés may use a shorter lease time of only a few hours.
 Since NAT and routing are already configured on the domain controller, clients will use it as their default gateway to access the internet. Therefore, on the router configuration step, enter **172.16.0.1** as the gateway address and make sure to click Add before moving forward. Continue through the wizard and click Finish. 
@@ -157,58 +157,58 @@ In this step, we will configure the Domain Controller (DC) to allow internet bro
 
 ## **Step 12 – Adding Users Using PowerShell** 
 In this step, we will use a PowerShell script to create multiple Active Directory users at once, instead of manually creating each account. For this, we will use the script provided by Josh Madakor..
-Link:https://github.com/joshmadakor1/AD_PS/blob/master/Generate-Names-Create Users.ps1
+Link: https://github.com/joshmadakor1/AD_PS/blob/master/Generate-Names-Create Users.ps1
 On the Domain Controller, open Internet Explorer, paste the link, and download the ZIP file. Save and extract the files to the desktop. Once extracted, open the names.txt file and add your own name at the top of the list, then save and close the file.
 <img width="850" height="450" alt="giving name" src="image/img33 giving own name.png">
 
 Next, open **Windows PowerShell ISE** as an administrator (Start → Search for Windows PowerShell ISE → Right-click → Run as administrator).
-<img width="850" height="450" alt="running powershell" src="image/img34 running powershell.png">
+<img width="850" height="500" alt="running powershell" src="image/img34 running powershell.png">
 
 
 Once inside PowerShell ISE, click the folder icon, browse to the extracted directory, and open the **1_CREATE_USERS.ps1 script**. 
-<img width="850" height="450" alt="opening file" src="image/img35 opening file.png">
+<img width="850" height="500" alt="opening file" src="image/img35 opening file.png">
 
 
 Before running it, change the execution policy to allow script execution by typing: Set-ExecutionPolicy Unrestricted. Select **Yes to All** when prompted. (Note: this setting is not recommended in real-world environments but is acceptable for our lab.)
-<img width="850" height="450" alt="command line" src="image/img36 command line.png">
+<img width="850" height="550" alt="command line" src="image/img36 command line.png">
 
 
 Finally, use the cd command to change to the directory where the script is located (for example: cd C:\Users\aalsabhj\Desktop\AD_PS-master\) and run the **1_CREATE_USERS.ps1** script. This will automatically generate and create multiple Active Directory user accounts from the names file.
 Now, to get the code to generate the names, we have to go to the directory within PowerShell. I used cd to change the directory, and then went to the file location: i.e., cd C:\users\a-alsabhj\desktop\AD_PS-mater\1_CREATE_USERS.ps1
-<img width="850" height="450" alt="ls" src="image/img37 ls.png">
+<img width="850" height="600" alt="ls" src="image/img37 ls.png">
 
 <img width="850" height="450" alt="list of user" src="image/img38 list of users.png">
 
 ## Step 13 – Creating Windows 10 VM (Client Workstation) 
 Next, we will create our client workstation by setting up a new virtual machine for Windows 10. The process is the same as creating the Domain Controller, except this time we will select the Windows 10 ISO file during the installation.
-<img width="850" height="450" alt="new vm" src="image/img39 new vm (client).png">
-<img width="850" height="450" alt="cleint setting1" src="image/img40 setting1 (client).png">
+<img width="750" height="450" alt="new vm" src="image/img39 new vm (client).png">
+<img width="850" height="550" alt="cleint setting1" src="image/img40 setting1 (client).png">
 <img width="850" height="450" alt="cleint setting2" src="image/img41 setting2 (client).png">
 
 
 Once the installation is complete, open the Command Prompt on the client machine and type ipconfig to confirm that it is connected to the internal network. In my case, the default gateway did not appear, which required troubleshooting. To resolve this, I went to **Server Manager → Tools → DHCP** on the Domain Controller. Under **IPv4**, I selected **Server Options**, added a new option for **Router**, and entered the IP address of the Domain Controller (172.16.0.1). After applying the changes, I restarted and refreshed the IPv4 configuration on the DHCP server. This ensured that the Windows 10 client could correctly receive its gateway information and communicate with the Domain Controller.
 <img width="850" height="450" alt="dhcp server" src="image/img42 dhcp server&apos;.png">
-<img width="850" height="450" alt="selecting router" src="image/img43 select router.png">
+<img width="850" height="500" alt="selecting router" src="image/img43 select router.png">
 
 
 ## **Step 14 – Joining the Windows 10 Client to the Domain**
 After installing Windows 10 and verifying the network, we open the Command Prompt on the client machine and run the ipconfig command to ensure that it is connected to the internal network. At this point, we have successfully set up routing through the NICs, and our infrastructure is complete.
-<img width="850" height="450" alt="ipconfig" src="image/img44 ipconfig.png">
+<img width="850" height="550" alt="ipconfig" src="image/img44 ipconfig.png">
 
 
 Next, we will test our network by pinging a website like google.com. At this point, we have successfully set up routing through the NICs, and our infrastructure is complete.
-<img width="850" height="450" alt="pinging google" src="image/img45 ping google.png">
+<img width="850" height="550" alt="pinging google" src="image/img45 ping google.png">
 
 
 The next step is to rename the workstation to “Client1” for easier identification. To do this, right-click the Windows icon, go to **Settings → Advanced System Settings**, change the computer name to **Client1**, and then click **Apply** and restart the system.
-<img width="850" height="450" alt="rename" src="image/img46 rename pc.png">
+<img width="850" height="550" alt="rename" src="image/img46 rename pc.png">
 
 
 Once the client restarts, we move back to the Domain Controller, open **Start → Windows Administrative Tools → Active Directory Users and Computers**, and under **mydomain.com → Computers**, we can now see “CLIENT1” listed.
-<img width="850" height="450" alt="client" src="image/img47 client1.png">
+<img width="850" height="550" alt="client" src="image/img47 client1.png">
 
 This confirms that our client machine has successfully joined the domain, and any accounts created under the Users container in Active Directory will now be able to log in to this workstation. With this step completed, our Active Directory environment is fully functional😉.
-<img width="850" height="450" alt="final" src="image/img48 final.png">
+<img width="850" height="550" alt="final" src="image/img48 final.png">
 
 
 ## **Results** 
